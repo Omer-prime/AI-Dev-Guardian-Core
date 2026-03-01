@@ -1,0 +1,53 @@
+{
+  "runs": [
+    {
+      "results": [
+        {
+          "level": "high",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test-app/test.js"
+                },
+                "region": {
+                  "startLine": 2
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Hardcoded secret detected: db.query('SELECT * FROM users WHERE id = ?', [userId]);const apiKey = \"123456SECRET\";"
+          },
+          "ruleId": "HARD_CODED_SECRET"
+        },
+        {
+          "level": "critical",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "test-app/test.js"
+                },
+                "region": {
+                  "startLine": 3
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Possible SQL injection: db.query(\"SELECT * FROM users WHERE id = \" + userId);"
+          },
+          "ruleId": "SQL_INJECTION"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "informationUri": "https://aidevguardian.dev",
+          "name": "AI Dev Guardian"
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}
