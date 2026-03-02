@@ -10,7 +10,3 @@ clap = { version = "4", features = ["derive"] }
 serde = { version = "1", features = ["derive"] }
 serde_yaml = "0.9"
 serde_json = "1"
-sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-native-tls"] }
-tokio = { version = "1", features = ["full"] }
-syn = { version = "2.0", features = ["derive", "parsing"] }
-dotenv = "0.15"
