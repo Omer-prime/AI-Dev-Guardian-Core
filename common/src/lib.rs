@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone, Copy, PartialEq, Eq)]
 pub enum Severity {
     Critical,
     High,
@@ -8,13 +8,13 @@ pub enum Severity {
     Low,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct FixSuggestion {
     pub message: String,
     pub replacement_example: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Issue {
     pub id: String,
     pub description: String,
@@ -30,7 +30,7 @@ pub struct Issue {
     pub fix: Option<FixSuggestion>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ScanResult {
     pub issues: Vec<Issue>,
     pub score: u8,
