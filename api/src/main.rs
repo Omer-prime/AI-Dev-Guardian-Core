@@ -1,13 +1,10 @@
-use axum::{
-    routing::post,
-    Json, Router,
-};
+use axum::{routing::post, Json, Router};
 use serde::{Deserialize, Serialize};
 use std::net::SocketAddr;
 
-use engine::scanner::scan_project;
 use engine::report::generate_report;
 use engine::rules::registry::RuleRegistry;
+use engine::scanner::scan_project;
 
 #[derive(Deserialize)]
 struct ScanRequest {
@@ -22,26 +19,18 @@ struct ScanResponse {
 
 #[tokio::main]
 async fn main() {
-    let app = Router::new()
-        .route("/scan", post(scan_handler));
+    let app = Router::new().route("/scan", post(scan_handler));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
 
     println!("API running on http://{}", addr);
 
-    let listener = tokio::net::TcpListener::bind(addr)
-        .await
-        .unwrap();
+    let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
 
-    axum::serve(listener, app)
-        .await
-        .unwrap();
+    axum::serve(listener, app).await.unwrap();
 }
 
-async fn scan_handler(
-    Json(payload): Json<ScanRequest>,
-) -> Json<ScanResponse> {
-
+async fn scan_handler(Json(payload): Json<ScanRequest>) -> Json<ScanResponse> {
     let rules = RuleRegistry::all_rules();
     let issues = scan_project(&payload.path, rules);
     let report = generate_report(issues);

@@ -1,19 +1,19 @@
 mod config; // Add this line to declare the config module
 
 use clap::Parser;
-use engine::scanner::scan_project;
-use engine::report::generate_report;
-use engine::patch::apply_fixes;
-use engine::rules::registry::RuleRegistry;
-use serde_json;
-use std::process;
-use sqlx::PgPool;
-use tokio;
 use common::ScanResult;
+use config::GuardianConfig;
 use dotenv::dotenv;
+use engine::patch::apply_fixes;
+use engine::report::generate_report;
+use engine::rules::registry::RuleRegistry;
+use engine::scanner::scan_project;
+use serde_json;
+use sqlx::PgPool;
 use std::env;
 use std::fs; // Add this to import std::fs
-use config::GuardianConfig;
+use std::process;
+use tokio;
 
 #[derive(Parser)]
 #[command(name = "ai-dev-guardian")]
@@ -45,7 +45,7 @@ async fn main() {
 
     // Fetch DATABASE_URL from the environment
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    
+
     // Print the DATABASE_URL to check if it was loaded correctly
     println!("Using DATABASE_URL: {}", database_url);
 
@@ -66,12 +66,7 @@ async fn main() {
 
     // CLI overrides config
     if let Some(cli_rules) = args.rules {
-        include_rules = Some(
-            cli_rules
-                .split(',')
-                .map(|s| s.trim().to_string())
-                .collect(),
-        );
+        include_rules = Some(cli_rules.split(',').map(|s| s.trim().to_string()).collect());
     }
 
     if let Some(cli_disable) = args.disable {
@@ -128,10 +123,7 @@ async fn main() {
     for issue in &report.issues {
         println!(
             "[{:?}] {} ({}:{})",
-            issue.severity,
-            issue.description,
-            issue.file,
-            issue.line
+            issue.severity, issue.description, issue.file, issue.line
         );
     }
 
@@ -174,7 +166,7 @@ async fn save_report_to_db(report: &ScanResult) -> Result<(), sqlx::Error> {
             issue.line as i32  // Cast `usize` to `i32`
         )
         .execute(&pool)
-        .await?; 
+        .await?;
     }
 
     Ok(())

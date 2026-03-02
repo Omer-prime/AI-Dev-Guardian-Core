@@ -1,8 +1,7 @@
 use common::{Issue, ScanResult};
 use serde_json::json;
-use sqlx::postgres::PgPoolOptions;
 use sqlx::Error as SqlxError;
-
+use sqlx::postgres::PgPoolOptions;
 
 // Helper function to handle database connection pooling and avoid re-initializing the pool
 async fn get_db_pool() -> Result<sqlx::PgPool, SqlxError> {

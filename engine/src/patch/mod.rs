@@ -16,12 +16,10 @@ pub fn apply_fixes(issues: &Vec<Issue>) {
 
     for (file_path, file_issues) in file_map {
         if let Ok(content) = fs::read_to_string(&file_path) {
-
             let backup_path = format!("{}.bak", file_path);
             fs::copy(&file_path, &backup_path).ok();
 
-            let mut lines: Vec<String> =
-                content.lines().map(|s| s.to_string()).collect();
+            let mut lines: Vec<String> = content.lines().map(|s| s.to_string()).collect();
 
             for issue in file_issues {
                 if let Some(fix) = &issue.fix {
@@ -35,8 +33,7 @@ pub fn apply_fixes(issues: &Vec<Issue>) {
 
             let new_content = lines.join("\n");
 
-            let mut file =
-                fs::File::create(&file_path).unwrap();
+            let mut file = fs::File::create(&file_path).unwrap();
             file.write_all(new_content.as_bytes()).unwrap();
 
             println!("Applied all fixes to {}", file_path);

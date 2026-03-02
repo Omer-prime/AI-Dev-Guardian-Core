@@ -1,13 +1,10 @@
-use super::{HardcodedSecretRule, SqlInjectionRule, SecurityRule};
+use super::{HardcodedSecretRule, SecurityRule, SqlInjectionRule};
 
 pub struct RuleRegistry;
 
 impl RuleRegistry {
     pub fn all_rules() -> Vec<Box<dyn SecurityRule>> {
-        vec![
-            Box::new(HardcodedSecretRule),
-            Box::new(SqlInjectionRule),
-        ]
+        vec![Box::new(HardcodedSecretRule), Box::new(SqlInjectionRule)]
     }
 
     pub fn filter_rules(

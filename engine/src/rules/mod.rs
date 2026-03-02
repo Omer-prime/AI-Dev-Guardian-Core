@@ -1,4 +1,4 @@
-use common::{Issue, Severity, FixSuggestion};
+use common::{FixSuggestion, Issue, Severity};
 use regex::Regex;
 pub mod registry;
 
@@ -126,7 +126,8 @@ impl SecurityRule for SqlInjectionRule {
                         category: self.category().to_string(),
                         confidence: self.confidence(),
                         fix: Some(FixSuggestion {
-                            message: "Use parameterized queries instead of string concatenation.".to_string(),
+                            message: "Use parameterized queries instead of string concatenation."
+                                .to_string(),
                             replacement_example: Some(
                                 "db.query('SELECT * FROM users WHERE id = ?', [userId]);"
                                     .to_string(),
