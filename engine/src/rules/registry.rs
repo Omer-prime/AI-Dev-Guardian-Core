@@ -11,23 +11,23 @@ impl RuleRegistry {
         include: Option<Vec<String>>,
         exclude: Option<Vec<String>>,
     ) -> Vec<Box<dyn SecurityRule>> {
-        let rules = Self::all_rules();
-
-        rules
+        Self::all_rules()
             .into_iter()
             .filter(|rule| {
                 let id = rule.id().to_string();
 
-                if let Some(ref include_list) = include {
-                    if !include_list.contains(&id) {
-                        return false;
-                    }
+                // If include list is provided, keep only those IDs
+                if let Some(ref include_list) = include
+                    && !include_list.contains(&id)
+                {
+                    return false;
                 }
 
-                if let Some(ref exclude_list) = exclude {
-                    if exclude_list.contains(&id) {
-                        return false;
-                    }
+                // If exclude list is provided, drop those IDs
+                if let Some(ref exclude_list) = exclude
+                    && exclude_list.contains(&id)
+                {
+                    return false;
                 }
 
                 true
